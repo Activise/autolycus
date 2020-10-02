@@ -18,13 +18,13 @@ public class ClassProcessor {
    * Transforms a root-element to its class equivalent specified in the first parameter
    *
    * @param <T>
-   * @param clazz The class of the target instance
+   * @param mappedClass The class of the target instance
    * @param rootElement The element to transform
    * @return
    */
-  public <T> T process(Class<T> clazz, WebElement rootElement) {
-    T newInstance = createInstance(clazz);
-    for (Field field : clazz.getDeclaredFields()) {
+  public <T> T process(Class<T> mappedClass, WebElement rootElement) {
+    T newInstance = createInstance(mappedClass);
+    for (Field field : mappedClass.getDeclaredFields()) {
       if (!field.isAnnotationPresent(From.class)) {
         continue;
       }

@@ -12,10 +12,11 @@ import lombok.RequiredArgsConstructor;
 public class Pager {
   private final Class<?> clazz;
   private final WebDriver webDriver;
+  private final SeleniumScraperConfiguration configuration;
   private int currentPage = 0;
 
-  public static Pager of(Class<?> clazz, WebDriver webDriver) {
-    return new Pager(clazz, webDriver);
+  public static Pager of(Class<?> clazz, WebDriver webDriver, SeleniumScraperConfiguration configuration) {
+    return new Pager(clazz, webDriver, configuration);
   }
 
   public boolean nextPage() {
@@ -26,7 +27,7 @@ public class Pager {
 
     var pageable = clazz.getAnnotation(Pageable.class);
     getNextPageButton(pageable).click();
-    ThreadUtil.trySleep(500);
+    ThreadUtil.trySleep(configuration.getSleepPerPage());
     return currentPage < pageable.maxPages();
   }
 

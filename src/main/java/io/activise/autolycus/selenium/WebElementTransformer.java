@@ -10,13 +10,13 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class WebElementTransformer {
-  private final Map<Class<? extends Annotation>, AnnotationFunction<?, ?>> annotationToFunction;
+  private final SeleniumScraperConfiguration configuration;
   private final WebDriver webDriver;
 
   public static WebElementTransformer of(
-      Map<Class<? extends Annotation>, AnnotationFunction<?, ?>> annotationToFunction,
+    SeleniumScraperConfiguration configuration,
       WebDriver webDriver) {
-    return new WebElementTransformer(annotationToFunction, webDriver);
+    return new WebElementTransformer(configuration, webDriver);
   }
 
   /**
@@ -32,10 +32,10 @@ public class WebElementTransformer {
     Object result = rootElement;
 
     for (Annotation annotation : field.getDeclaredAnnotations()) {
-      if (!annotationToFunction.containsKey(annotation.annotationType())) {
+      var function = configuration.getAnnotationFunction(annotation.annotationType());
+      if (function == null) {
         continue;
       }
-      var function = annotationToFunction.get(annotation.annotationType());
       try {
         var context = new AnnotationFunction.Context(annotation, webDriver, rootElement, result);
         result = function.apply(context);
