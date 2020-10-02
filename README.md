@@ -4,18 +4,18 @@
 **Examples**
 - Scraper
 
-      Scraper scraper = new AnnotationBasedSeleniumScraper.createDefault();
-	  List<GooglePlace> scrapedThings = scraper.scrape("restaurants in new york", GooglePlace.class);
+      Scraper scraper = AnnotationBasedSeleniumScraper.createDefault();
+      List<GooglePlace> scrapedThings = scraper.scrape("restaurants in new york", GooglePlace.class);
 
  - GooglePlace
 
        @BaseUrl("https://www.google.de/maps/search/")
        @From("section-result-content")
        @Pageable(value = "//button[@jsaction='pane.paginationSection.nextPage'", maxPages = 3)
-       public class GooglePlace { 
+       public class GooglePlace {
          @From("section-result-title")
-         private String  name;
-       		
+         private String name;
+
          @From("section-result-location")
          private String location;
 
@@ -31,11 +31,11 @@
       @From(".//div[@class='fc-time']/span")
         @Regex("(.*) - .*")
         private String startZeit;
-		    
+
         @From(".//div[@class='fc-time']/span")
         @Regex(".* - (.*)")
         private String endZeit;
-		    
+
         @From("fc-title")
-        private  String  title;
+        private String title;
       }
